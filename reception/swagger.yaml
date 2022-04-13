@@ -1,0 +1,802 @@
+openapi: 3.0.0
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/centerinform/Reception/4.0.0
+info:
+  description: Сервис API для УТМ
+  version: "4.0.0"
+  title: Reception API
+  license:
+    name: © Росалкогольрегулирование, 2022
+tags:
+  - name: orgs
+    description: Добавление новых организаций
+  - name: redmine
+    description: Взаимодействие с тех.поддержкой
+  - name: nsi
+    description: Справочник
+  - name: license
+    description: Оформление лицензии
+  - name: frap
+    description: Федеральный реестр алкогольной продукции
+  - name: corrector
+    description: Информация о корректироках
+  - name: requestInfo
+    description: хз
+  - name: rating
+    description: хз
+  - name: claimIssueFsm
+    description: Запрос на выпуск ФСМ
+  - name: gateway
+    description: Прокси
+  - name: fsmProxy
+    description: Прокси
+paths:
+  /orgs:
+    get:
+      tags:
+        - orgs
+      summary: Получение списка организаций
+      operationId: getOrgs
+      parameters:
+        - name: inn
+          in: query
+          description: ИНН
+          required: true
+          example: 7860249880
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Список организаций
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Org'
+        '400':
+          description: Bad request
+        '500':
+          description: Processing error
+  /orgs/address:
+    get:
+      tags:
+        - orgs
+      summary: Получение адреса организации
+      operationId: getOrgsAddress
+      parameters:
+        - name: fias
+          in: query
+          description: Код ФИАС
+          required: true
+          example: 007debd5-33cd-43e2-a698-5a709543f4f9
+          schema:
+            type: string
+            format: uuid
+            pattern: '^[a-fA-F0-9]{8}(-[a-fA-F0-9]{4}){3}-[a-fA-F0-9]{12}$'
+      responses:
+        '200':
+          description: Адрес организации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgAddress'
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /orgs/entity:
+    post:
+      tags:
+        - orgs
+      summary: Добавление юридического лица
+      operationId: addOrgsEntity
+      requestBody:
+        description: Данные юридического лица
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrgEntity'
+      responses:
+        '201':
+          description: Юридическое лицо добавлено
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /orgs/entrepreneur:
+    post:
+      tags:
+        - orgs
+      summary: Добавление индивидуального предпринимателя
+      operationId: addOrgsEntrepreneur
+      requestBody:
+        description: Данные индивидуального предпринимателя
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrgEntrepreneur'
+      responses:
+        '201':
+          description: Индивидуальный предприниматель добавлен
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /orgs/foreigner:
+    post:
+      tags:
+        - orgs
+      summary: Добавление иностранной организации
+      operationId: addOrgsForeigner
+      requestBody:
+        description: Данные иностранной организации
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrgForeigner'
+      responses:
+        '201':
+          description: Иностранная организация добавлена
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /redmine/issues:
+    get:
+      tags:
+        - redmine
+      summary: TODO Описание запроса
+      operationId: redmineGetIssues
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+    post:
+      tags:
+        - redmine
+      summary: TODO Описание запроса
+      operationId: redmineCreateIssue
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /redmine/issues/{id}:
+    get:
+      tags:
+        - redmine
+      summary: TODO Описание запроса
+      operationId: redmineGetIssue
+      parameters:
+        - name: id
+          in: path
+          example: 1
+          description: Идентификатор задачи
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+    put:
+      tags:
+        - redmine
+      summary: TODO Описание запроса
+      operationId: redmineUpdateIssue
+      parameters:
+        - name: id
+          in: path
+          example: 1
+          description: Идентификатор задачи
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /redmine/uploads:
+    post:
+      tags:
+        - redmine
+      summary: TODO Описание запроса
+      operationId: redmineUpload
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /nsi/organizations:
+    get:
+      tags:
+        - nsi
+      summary: TODO Описание запроса
+      operationId: getNsiOrganizationsByCode
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+    post:
+      tags:
+        - nsi
+      summary: TODO Описание запроса
+      operationId: getNsiOrganizationsByFilter
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /nsi/productions:
+    get:
+      tags:
+        - nsi
+      summary: TODO Описание запроса
+      operationId: getNsiProductionsByCode
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+    post:
+      tags:
+        - nsi
+      summary: TODO Описание запроса
+      operationId: getNsiProductionsByFilter
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /nsi/classifiers:
+    get:
+      tags:
+        - nsi
+      summary: TODO Описание запроса
+      operationId: getNsiClassifiers
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/license:
+    get:
+      tags:
+        - license
+      summary: TODO Описание запроса
+      operationId: getLicenses
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/license/clients:
+    get:
+      tags:
+        - license
+      summary: TODO Описание запроса
+      operationId: getLicenseEgaisNsiClientsWithLicRequest
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/license/request:
+    get:
+      tags:
+        - license
+      summary: TODO Описание запроса
+      operationId: getLicenseRequests
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/license/request/file:
+    get:
+      tags:
+        - license
+      summary: TODO Описание запроса
+      operationId: getLLicenseRequestFile
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/license/request/check/file:
+    get:
+      tags:
+        - license
+      summary: TODO Описание запроса
+      operationId: getLicenseFileByCheckCode
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/license/check/file:
+    get:
+      tags:
+        - license
+      summary: TODO Описание запроса
+      operationId: getLicenseRequestCheckFile
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/license/wholesale:
+    get:
+      tags:
+        - license
+      summary: TODO Описание запроса
+      operationId: getLicenseRequests_ПОВТОР_РАЗОБРАТЬСЯ_ПОЧЕМУ
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/frap/vid_ap:
+    get:
+      tags:
+        - frap
+      summary: TODO Описание запроса
+      operationId: getFrapVidAP
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/frap/spr:
+    get:
+      tags:
+        - frap
+      summary: TODO Описание запроса
+      operationId: getFrapSpr
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/frap/okrug:
+    get:
+      tags:
+        - frap
+      summary: TODO Описание запроса
+      operationId: getFrapDistricts
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/frap/country:
+    get:
+      tags:
+        - frap
+      summary: TODO Описание запроса
+      operationId: getFrapCountries
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/frap/capacity:
+    get:
+      tags:
+        - frap
+      summary: TODO Описание запроса
+      operationId: getFrapCapacity
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/frap/packing:
+    get:
+      tags:
+        - frap
+      summary: TODO Описание запроса
+      operationId: getFrapPacking
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/frap/material:
+    get:
+      tags:
+        - frap
+      summary: TODO Описание запроса
+      operationId: getFrapMaterialByCode
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/frap/other_ap:
+    get:
+      tags:
+        - frap
+      summary: TODO Описание запроса
+      operationId: getFrapOtherApByCode
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/frap/proactive_info:
+    get:
+      tags:
+        - frap
+      summary: TODO Описание запроса
+      operationId: getFrapProactiveInfo
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+    post:
+      tags:
+        - frap
+      summary: TODO Описание запроса
+      operationId: postFrapProactiveInfo
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/frap/claim:
+    get:
+      tags:
+        - frap
+      summary: TODO Описание запроса
+      operationId: getFrapClaimById
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/frap/claims:
+    get:
+      tags:
+        - frap
+      summary: TODO Описание запроса
+      operationId: getFrapClaims
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/corrector:
+    get:
+      tags:
+        - corrector
+      summary: TODO Описание запроса
+      operationId: correctorGetAll
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/request_info:
+    get:
+      tags:
+        - requestInfo
+      summary: TODO Описание запроса
+      operationId: requestInfoGetAll
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/request_info/zip:
+    get:
+      tags:
+        - requestInfo
+      summary: TODO Описание запроса
+      operationId: requestInfoGetZip
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/rating:
+    post:
+      tags:
+        - rating
+      summary: TODO Описание запроса
+      operationId: ratingAdd
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/claim_issue_fsm:
+    get:
+      tags:
+        - claimIssueFsm
+      summary: TODO Описание запроса
+      operationId: claimIssueFsmGetAll
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/proxy/fsm/{proxyPath}:
+    get:
+      tags:
+        - fsmProxy
+      summary: Прокси для сервиса ФСМ
+      operationId: fsmProxyGet
+      parameters:
+        - $ref: '#/components/parameters/proxyPathParam'
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+    post:
+      tags:
+        - fsmProxy
+      summary: Прокси для сервиса ФСМ
+      operationId: fsmProxyPost
+      parameters:
+        - $ref: '#/components/parameters/proxyPathParam'
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+    patch:
+      tags:
+        - fsmProxy
+      summary: Прокси для сервиса ФСМ
+      operationId: fsmProxyPatch
+      parameters:
+        - $ref: '#/components/parameters/proxyPathParam'
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+    delete:
+      tags:
+        - fsmProxy
+      summary: Прокси для сервиса ФСМ
+      operationId: fsmProxyDelete
+      parameters:
+        - $ref: '#/components/parameters/proxyPathParam'
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /universal/gateway/{service}/{proxyPath}:
+    get:
+      tags:
+        - gateway
+      summary: Универсальный прокси
+      operationId: gatewayGet
+      parameters:
+        - $ref: '#/components/parameters/proxyServiceParam'
+        - $ref: '#/components/parameters/proxyPathParam'
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+    post:
+      tags:
+        - gateway
+      summary: Универсальный прокси
+      operationId: gatewayPost
+      parameters:
+        - $ref: '#/components/parameters/proxyServiceParam'
+        - $ref: '#/components/parameters/proxyPathParam'
+      responses:
+        '200':
+          description: TODO OK
+        '400':
+          description: Bad request
+        '500':
+          description: Server error  
+components:
+  schemas:
+    Org:
+      type: object
+      properties:
+        actualAddress:
+          type: string
+          example: г. Москва ул. Большая Дмитровка д.15
+          description: Фактический адрес организации
+          maxLength: 256
+        inn:
+          type: string
+          example: 7860249880
+          description: ИНН
+          pattern: '^\d{10}$'
+        kpp:
+          type: string
+          example: 775021017
+          description: КПП
+          pattern: '^\d{9}$'
+        ogrn:
+          type: string
+          example: 1027700132195
+          description: ОГРН
+          pattern: '^\d{13}$'
+        orgName:
+          type: string
+          example: АО ЦентрИнформ
+          description: Наименование организации
+          maxLength: 256
+        status:
+          type: string
+          example: Подтверждена ФНС
+          description: Статус организации
+    OrgAddress:
+      type: object
+      properties:
+        address:
+          type: string
+        code:
+          type: string
+    OrgEntity:
+      type: object
+      properties:
+        userInn:
+          type: string
+        typeContragent:
+          type: integer
+        kpp:
+          type: string
+    OrgEntrepreneur:
+      type: object
+      properties:
+        userInn:
+          type: string
+        typeContragent:
+          type: integer
+        actualAddress:
+          type: string
+        regionCode:
+          type: string
+    OrgForeigner:
+      type: object
+      required:
+        - actualAddress
+        - countryCode
+        - fullName
+        - legalAddress
+        - shortName
+      properties:
+        actualAddress:
+          type: string
+          example: Фактический адрес (varchar(2000))
+        countryCode:
+          type: string
+          example: Код страны (varchar(3))
+        fullName:
+          type: string
+          example: Полное наименование (varchar(64))
+        legalAddress:
+          type: string
+          example: Юридический адрес (varchar(255))
+        shortName:
+          type: string
+          example: Краткое наименование (varchar(64))
+  parameters:
+    innParam:
+      name: inn
+      in: query
+      example: 7860249880
+      description: ИНН
+      required: true
+      schema:
+        type: string
+    proxyServiceParam:
+      name: service
+      in: path
+      example: some-service
+      description: Наименование сервиса на который нужно перенаправить запрос
+      required: true
+      schema:
+        type: string
+    proxyPathParam:
+      name: proxyPath
+      in: path
+      description: Параметр содержащий путь для проксирования. Может быть пустым
+      required: true
+      schema:
+        type: string
+        example: serv/users
+        format: path
